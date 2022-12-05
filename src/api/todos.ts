@@ -1,8 +1,22 @@
 import { Todo } from '../types/Todo';
 import { client } from '../utils/fetchClient';
 
-export const getTodos = (userId: number) => {
-  return client.get<Todo[]>(`/todos?userId=${userId}`);
+export const getTodos = async (userId: number) => {
+  return await client.get<Todo[]>(`/todos?userId=${userId}`) || null;
 };
 
-// Add more methods here
+export const createTodos = async (todo: Omit<Todo, 'id'>) => {
+  const { userId, title, completed } = todo;
+
+  return client.post<Todo>('/todos', {
+    userId, title, completed,
+  });
+};
+
+export const deleteTodo = async (todo: Todo) => {
+  return client.delete(`/todos/${todo.id}`);
+};
+
+export const updateTodo = async (todoId: number, completed: boolean) => {
+  return client.patch(`/todos/${todoId}`, { completed });
+};
