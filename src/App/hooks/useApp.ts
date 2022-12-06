@@ -1,20 +1,13 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, {
-  ChangeEvent,
-  useCallback, useContext, useEffect, useRef, useState,
+  ChangeEvent, useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
-import cn from 'classnames';
-import { AuthContext } from './components/Auth/AuthContext';
+import { AuthContext } from '../../components/Auth/AuthContext';
+import { Todo } from '../../types/Todo';
 import {
   createTodos, deleteTodo, getTodos, updateTodo,
-} from './api/todos';
-import { Todo } from './types/Todo';
-import { TodoList } from './components/TodoList/TodoList';
-import { NewTodo } from './components/NewTodo/NewTodo';
-import { Footer } from './components/Footer/Footer';
-import { ErrorMessage } from './components/ErrorMessage/ErrorMessage';
+} from '../../api/todos';
 
-export const App: React.FC = () => {
+export const useApp = () => {
   const user = useContext(AuthContext);
   const newTodoField = useRef<HTMLInputElement>(null);
 
@@ -22,7 +15,7 @@ export const App: React.FC = () => {
   const [hasLoadingError, setHasLoadingError] = useState(false);
   const [todosStatus, setTodosStatus] = useState('all');
   const [title, setTitle] = useState('');
-  const [isSelected, setIsSelected] = useState(true);
+  const [isSelected, setIsSelected] = useState(false);
 
   const handleChangeTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -121,10 +114,10 @@ export const App: React.FC = () => {
 
   const selectAll = useCallback(async () => {
     todos.map(async (todo) => {
-      if (!todo.completed && isSelected) {
+      if (!todo.completed && !isSelected) {
         await selectedComplete(todo);
       } else if
-      (todo.completed && !isSelected) {
+      (todo.completed && isSelected) {
         await selectedComplete(todo);
       }
     });
@@ -144,50 +137,21 @@ export const App: React.FC = () => {
     }
   }, [user]);
 
-  return (
-    <div className="todoapp">
-      <h1 className="todoapp__title">todos</h1>
-
-      <div className="todoapp__content">
-        <header className="todoapp__header">
-          <button
-            data-cy="ToggleAllButton"
-            type="button"
-            className={cn(
-              'todoapp__toggle-all', { active: isSelected },
-            )}
-            onClick={selectAll}
-          />
-
-          <NewTodo
-            title={title}
-            onCreateTodo={createTodo}
-            newTodoField={newTodoField}
-            onChangeTitle={handleChangeTitle}
-          />
-        </header>
-
-        {todos.length > 0 && (
-          <>
-            <TodoList
-              todos={filteredTodo}
-              onDelete={removeTodo}
-              onUpdate={loadTodos}
-            />
-            <Footer
-              todos={todos}
-              todosStatus={todosStatus}
-              onChangeStatus={handleChangeStatus}
-              onRemoveCompleted={removeCompleted}
-            />
-          </>
-        )}
-      </div>
-
-      <ErrorMessage
-        isError={hasLoadingError}
-        onCloseError={handleError}
-      />
-    </div>
-  );
+  return {
+    title,
+    todos,
+    selectAll,
+    loadTodos,
+    removeTodo,
+    createTodo,
+    isSelected,
+    todosStatus,
+    handleError,
+    filteredTodo,
+    newTodoField,
+    removeCompleted,
+    hasLoadingError,
+    handleChangeTitle,
+    handleChangeStatus,
+  };
 };
