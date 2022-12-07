@@ -10,9 +10,11 @@ export const ErrorMessage: FC<Props> = (props) => {
   const { isError, onCloseError } = props;
 
   useEffect(() => {
-    setTimeout(() => {
-      onCloseError();
-    }, 3000);
+    if (isError) {
+      setTimeout(() => {
+        onCloseError();
+      }, 3000);
+    }
   }, [isError]);
 
   return (
@@ -26,7 +28,6 @@ export const ErrorMessage: FC<Props> = (props) => {
         { hidden: !isError },
       )}
     >
-      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         data-cy="HideErrorButton"
         type="button"

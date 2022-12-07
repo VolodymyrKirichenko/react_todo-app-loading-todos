@@ -8,12 +8,10 @@ import { useApp } from './hooks/useApp';
 
 export const App: FC = () => {
   const {
-    title,
     todos,
     selectAll,
     loadTodos,
     removeTodo,
-    createTodo,
     isSelected,
     todosStatus,
     handleError,
@@ -21,7 +19,6 @@ export const App: FC = () => {
     newTodoField,
     removeCompleted,
     hasLoadingError,
-    handleChangeTitle,
     handleChangeStatus,
   } = useApp();
 
@@ -37,10 +34,8 @@ export const App: FC = () => {
           />
 
           <NewTodo
-            title={title}
-            onCreateTodo={createTodo}
+            loadTodos={loadTodos}
             newTodoField={newTodoField}
-            onChangeTitle={handleChangeTitle}
           />
         </header>
 
@@ -51,6 +46,7 @@ export const App: FC = () => {
               onDelete={removeTodo}
               onUpdate={loadTodos}
             />
+
             <Footer
               todos={todos}
               todosStatus={todosStatus}

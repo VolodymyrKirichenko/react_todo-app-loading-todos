@@ -33,9 +33,7 @@ export const Footer: FC<Props> = (props) => {
           className={cn('filter__link', {
             selected: todosStatus === 'all',
           })}
-          onClick={() => {
-            onChangeStatus('all');
-          }}
+          onClick={() => onChangeStatus('all')}
         >
           All
         </a>
@@ -46,9 +44,7 @@ export const Footer: FC<Props> = (props) => {
           className={cn('filter__link', {
             selected: todosStatus === 'active',
           })}
-          onClick={() => {
-            onChangeStatus('active');
-          }}
+          onClick={() => onChangeStatus('active')}
         >
           Active
         </a>
@@ -58,25 +54,23 @@ export const Footer: FC<Props> = (props) => {
           className={cn('filter__link', {
             selected: todosStatus === 'completed',
           })}
-          onClick={() => {
-            onChangeStatus('completed');
-          }}
+          onClick={() => onChangeStatus('completed')}
         >
           Completed
         </a>
       </nav>
 
       {isCompletedTodo
-      && (
-        <button
-          data-cy="ClearCompletedButton"
-          type="button"
-          className="todoapp__clear-completed"
-          onClick={onRemoveCompleted}
-        >
-          Clear completed
-        </button>
-      )}
+        && (
+          <button
+            data-cy="ClearCompletedButton"
+            type="button"
+            className="todoapp__clear-completed"
+            onClick={onRemoveCompleted}
+          >
+            Clear completed
+          </button>
+        )}
     </footer>
   );
 };

@@ -13,8 +13,8 @@ export const createTodos = async (todo: Omit<Todo, 'id'>) => {
   });
 };
 
-export const deleteTodo = async (todo: Todo) => {
-  return client.delete(`/todos/${todo.id}`);
+export const deleteTodo = async (todoId: number) => {
+  return client.delete(`/todos/${todoId}`);
 };
 
 export const updateTodo = async (todoId: number, completed: boolean) => {
